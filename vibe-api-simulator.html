@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vibe King API Simulator</title>
+  <style>
+    body { font-family: monospace; background: #111; color: #0f0; padding: 20px; }
+    button { margin: 10px; padding: 10px; font-size: 16px; cursor: pointer; }
+    pre { background: #222; padding: 10px; border: 1px solid #0f0; }
+    input { background: #222; color: #0f0; border: 1px solid #0f0; padding: 5px; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+  <h1>🧪 Vibe King API Simulator</h1>
+
+  <button onclick="getAPI('vibe')">/vibe</button>
+  <button onclick="getAPI('roast')">/roast</button>
+  <button onclick="getAPI('goodluck')">/goodluck</button>
+
+  <hr>
+  <h2>🎚️ Get Your Vibe Level</h2>
+  <input type="text" id="vibeName" placeholder="Enter your name">
+  <button onclick="getAPI('vibe-level?name=' + document.getElementById('vibeName').value)">Check Vibe Level</button>
+
+  <pre id="output">Click a button to call a fake API endpoint!</pre>
+
+  <script>
+    // 🔥 Roast list (copy-paste friendly)
+    const roasts = [
+      "You're so slow, even a snail got Buddha before you.",
+      "Your code runs better when it's deleted.",
+      "You're the reason 'Press F to Pay Respects' exists.",
+      "Even the loading screen is faster than you.",
+      "You have so little drip, water avoids you.",
+      "You're so basic, Python calls you a string.",
+      "You're like a lag spike — annoying and always at the worst moment.",
+      "Even Error 404 is easier to find than your skill.",
+      "Your vibe level? Let me guess... room temperature.",
+      "You couldn't beat the tutorial boss if it had 1 HP.",
+      "You're so dull, even ChatGPT can't finish your sentences.",
+      "You're the type to get KO'd by the safe zone.",
+      "You vibe like a default Roblox character in 2025.",
+      "You're not slow... you're cinematic slow-motion.",
+      "You got banned from the vibe zone... for not having any.",
+      "You're so clueless, your mini-map filed a missing person report.",
+      "You couldn't roast a marshmallow with this much fire.",
+      "You're not a bug in the system, you're a full crash log.",
+      "Your logic is so broken, even spaghetti code makes more sense.",
+      "You're not even mid... you're the loading screen BETWEEN mids."
+    ];
+  
+    // 🔧 API simulation object
+    const api = {
+      "vibe": () => ({ message: "🔥 The Vibe King is in the house!" }),
+      "roast": () => {
+        const roast = roasts[Math.floor(Math.random() * roasts.length)];
+        return { roast };
+      },
+      "goodluck": () => ({ message: "🍀 May RNG forever bless you, legend." }),
+      "vibe-level": (params) => {
+        const name = params.get("name") || "Unknown";
+        const level = Math.floor((name.length * 42 + name.charCodeAt(0)) % 1000);
+        return {
+          name,
+          level,
+          status: level > 700 ? "🔥 GOD-TIER VIBES 🔥" :
+                  level > 400 ? "😎 Solid Vibin'" :
+                  "🧊 Vibes need work, young padawan"
+        };
+      }
+    };
+  
+    // 🧪 API caller
+    function getAPI(endpointWithParams) {
+      const [endpoint, queryString] = endpointWithParams.split("?");
+      const handler = api[endpoint];
+      if (!handler) {
+        document.getElementById("output").textContent = "❌ Unknown endpoint: /" + endpoint;
+        return;
+      }
+  
+      const params = new URLSearchParams(queryString || "");
+      const result = handler(params);
+      document.getElementById("output").textContent = JSON.stringify(result, null, 2);
+    }
+  </script>
+  
+</body>
+</html>
